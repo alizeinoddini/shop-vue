@@ -6,14 +6,14 @@
         <!-- هدر سمت راست -->
 
         <div class="header-right">
-          <a href="index.html" class="logo">
+          <router-link to="/" class="logo">
             <img
               src="images/logo.png"
               alt="لوگو سایت"
               width="105"
               height="25"
             />
-          </a>
+          </router-link>
         </div>
 
         <!-- پایان هدر سمت راست -->
@@ -27,15 +27,17 @@
             <li>
               <ul>
                 <li>
-                  <a href="tel:#"
+                  <a href="tel:09209290410"
                     ><i class="icon-phone"></i>تلفن تماس : 09209290410</a
                   >
                 </li>
 
-                <li><a href="about.html">درباره ما</a></li>
-                <li><a href="contact.html">تماس با ما</a></li>
+                <li><router-link to="about">درباره ما</router-link></li>
+                <li><router-link to="contact">تماس با ما</router-link></li>
                 <li>
-                  <a href="login.html"><i class="icon-user"></i>ورود</a>
+                  <router-link to="login"
+                    ><i class="icon-user"></i>ورود</router-link
+                  >
                 </li>
               </ul>
             </li>
@@ -57,8 +59,8 @@
         <div class="header-left"></div>
 
         <div class="dropdown cart-dropdown">
-          <a
-            href="cart.html"
+          <router-link
+            to="/cart"
             class="dropdown-toggle"
             role="button"
             data-toggle="dropdown"
@@ -68,7 +70,7 @@
           >
             <i class="icon-shopping-cart"></i>
             <span class="cart-count">2</span>
-          </a>
+          </router-link>
         </div>
       </div>
 
