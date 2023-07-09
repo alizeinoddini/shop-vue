@@ -21,7 +21,7 @@
             <div>
               <div class="row">
                 <figure class="product-main-image">
-                  <img src="images/products/product-2.jpg" alt="تصویر محصول" />
+                  <img :src="product.img" alt="تصویر محصول" />
                 </figure>
               </div>
             </div>
@@ -31,10 +31,12 @@
             <div style="text-align: right">
               <!-- عنوان محصول -->
 
-              <h1 class="product-title">اسپیکر بلوتوثی</h1>
+              <h1 class="product-title">{{ product.name }}</h1>
 
               <!-- قیمت -->
-              <div class="product-price">84,000 تومان</div>
+              <div class="product-price">
+                {{ product.price * product.count }}
+              </div>
 
               <!-- توضیحات محصول -->
 
@@ -55,7 +57,7 @@
                     type="number"
                     id="qty"
                     class="form-control"
-                    value="1"
+                    v-model="product.count"
                     min="1"
                     max="10"
                     step="1"
@@ -66,12 +68,14 @@
               <div class="mb-3"></div>
 
               <div>
-                <router-link
+                <button
+                  @click="AddToCart"
                   to="cart"
                   class="btn btn-primary btn-block py-4 h5 text-white"
                   style="background-color: #c96; border: #c96; cursor: pointer"
-                  >افزودن به سبد خرید
-                </router-link>
+                >
+                  افزودن به سبد خرید
+                </button>
               </div>
             </div>
           </div>
@@ -118,5 +122,23 @@
 <script>
 export default {
   name: "ProductVue",
+  data() {
+    return {
+      product: {
+        name: "اسپیکر بلوتوثی",
+        count: 1,
+        price: "84000",
+        img: "images/products/product-2.jpg",
+      },
+    };
+  },
+
+  methods: {
+    AddToCart() {
+      localStorage.setItem("products", JSON.stringify(this.product));
+      alert("با موفقیت به سبد خرید اضافه شد");
+      this.$router.push("/cart");
+    },
+  },
 };
 </script>

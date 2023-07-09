@@ -69,7 +69,7 @@
             data-display="static"
           >
             <i class="icon-shopping-cart"></i>
-            <span class="cart-count">2</span>
+            <span class="cart-count">{{ CartProductCount }}</span>
           </router-link>
         </div>
       </div>
@@ -84,5 +84,16 @@
 <script>
 export default {
   name: "HeaderVue",
+  data() {
+    return {
+      CartProductCount: 0,
+    };
+  },
+  updated() {
+    this.CartProductCount = localStorage.getItem("products") ? 1 : 0;
+  },
+  mounted() {
+    this.CartProductCount = localStorage.getItem("products") ? 1 : 0;
+  },
 };
 </script>

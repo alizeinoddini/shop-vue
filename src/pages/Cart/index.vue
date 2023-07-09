@@ -19,7 +19,7 @@
   <div class="page-content">
     <div>
       <div class="container">
-        <div class="row">
+        <div class="row" v-if="products">
           <!-- جدول صورت حساب -->
 
           <div class="col-lg-9">
@@ -39,28 +39,33 @@
                   <td class="product-col">
                     <div class="product">
                       <figure class="product-media">
-                        <a href="#">
-                          <img
-                            src="images/products/product-1.jpg"
-                            alt="تصویر محصول"
-                          />
-                        </a>
+                        <router-link to="/product">
+                          <img :src="products.img" alt="تصویر محصول" />
+                        </router-link>
                       </figure>
 
                       <h3 class="product-title">
-                        <a href="#">لپ تاپ مایکروسافت</a>
+                        <router-link to="/product">{{
+                          products.name
+                        }}</router-link>
+                        <button
+                          class="btn btn-danger mx-5"
+                          @click="DeleteItems"
+                        >
+                          حذف
+                        </button>
                       </h3>
                     </div>
                   </td>
 
-                  <td class="price-col">84,000,000</td>
+                  <td class="price-col">{{ products.price }}</td>
                   <td class="quantity-col">
                     <!-- تعداد -->
                     <div class="cart-product-quantity">
                       <input
                         type="number"
                         class="form-control"
-                        value="1"
+                        v-model="products.count"
                         min="1"
                         max="10"
                         step="1"
@@ -71,7 +76,9 @@
                   </td>
 
                   <!-- قیمت مجموع -->
-                  <td class="total-col">84,000,000</td>
+                  <td class="total-col">
+                    {{ products.price * products.count }}
+                  </td>
                   <td class="remove-col"></td>
                 </tr>
 
@@ -92,7 +99,9 @@
                 <tbody>
                   <tr>
                     <td>جمع کل سبد خرید :</td>
-                    <td class="text-left">84,000,000 تومان</td>
+                    <td class="text-left">
+                      {{ products.price * products.count }} تومان
+                    </td>
                   </tr>
 
                   <!-- شیوه ارسال -->
@@ -110,6 +119,8 @@
                           id="free-shipping"
                           name="shipping"
                           class="custom-control-input"
+                          value="0"
+                          @change="SetPricePost($event, 'ارسال رایگان')"
                         />
                         <label class="custom-control-label" for="free-shipping"
                           >ارسال رایگان</label
@@ -127,6 +138,8 @@
                           id="standart-shipping"
                           name="shipping"
                           class="custom-control-input"
+                          value="10000"
+                          @change="SetPricePost($event, 'پست سفارشی')"
                         />
                         <label
                           class="custom-control-label"
@@ -146,6 +159,8 @@
                           id="express-shipping"
                           name="shipping"
                           class="custom-control-input"
+                          value="20000"
+                          @change="SetPricePost($event, 'پست پیشتاز')"
                         />
                         <label
                           class="custom-control-label"
@@ -163,7 +178,10 @@
 
                   <tr>
                     <td>مبلغ قابل پرداخت :</td>
-                    <td class="text-left">84,000,000 تومان</td>
+                    <td class="text-left">
+                      {{ products.price * products.count + Number(pricePost) }}
+                      تومان
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -175,6 +193,10 @@
             </div>
           </div>
         </div>
+
+        <div v-else class="text-center">
+          <h1>هیچ محصولی وجود ندارد</h1>
+        </div>
       </div>
     </div>
   </div>
@@ -183,5 +205,31 @@
 <script>
 export default {
   name: "CartVue",
+  data() {
+    return {
+      products: {},
+      pricePost: 0,
+    };
+  },
+  mounted() {
+    this.products = JSON.parse(localStorage.getItem("products"));
+  },
+  methods: {
+    SetPricePost(e, name) {
+      this.pricePost = e.target.value;
+      localStorage.setItem(
+        "products",
+        JSON.stringify({
+          ...this.products,
+          post: name,
+          postPrice: Number(e.target.value),
+        })
+      );
+    },
+    DeleteItems() {
+      localStorage.removeItem("products");
+      this.products = null;
+    },
+  },
 };
 </script>

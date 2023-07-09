@@ -117,20 +117,36 @@
 
                   <tbody>
                     <tr>
-                      <td><a href="#"> لپ تاپ مایکروسافت </a></td>
-                      <td class="text-left">152,000 تومان</td>
+                      <td>
+                        <router-link to="/product">
+                          {{ products.name }}
+                        </router-link>
+                      </td>
+                      <td class="text-left">{{ products.price }} تومان</td>
+                    </tr>
+                    <tr>
+                      <td>تعداد</td>
+                      <td class="text-left">{{ products.count }}</td>
                     </tr>
                     <tr>
                       <td>جمع سبد خرید</td>
-                      <td class="text-left">236,000 تومان</td>
+                      <td class="text-left">
+                        {{ products.price * products.count }} تومان
+                      </td>
                     </tr>
                     <tr>
                       <td>شیوه ارسال :</td>
-                      <td class="text-left">ارسال رایگان</td>
+                      <td class="text-left">{{ products.post }}</td>
                     </tr>
                     <tr>
                       <td>مبلغ قابل پرداخت :</td>
-                      <td class="text-left">236,000 تومان</td>
+                      <td class="text-left">
+                        {{
+                          products.price * products.count +
+                          Number(products.postPrice)
+                        }}
+                        تومان
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -156,5 +172,13 @@
 <script>
 export default {
   name: "CheckoutVue",
+  data() {
+    return {
+      products: {},
+    };
+  },
+  mounted() {
+    this.products = JSON.parse(localStorage.getItem("products"));
+  },
 };
 </script>
